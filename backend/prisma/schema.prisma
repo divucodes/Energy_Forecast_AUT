@@ -1,0 +1,26 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model CSVFile {
+  id        Int       @id @default(autoincrement())
+  name      String
+  rows      CSVRow[]
+  createdAt DateTime  @default(now())
+}
+
+model CSVRow {
+  id        Int       @id @default(autoincrement())
+  csvFile   CSVFile   @relation(fields: [csvFileId], references: [id])
+  csvFileId Int
+  date      String
+  time      String
+  priceFcst Float
+  actualPrice Float
+}
